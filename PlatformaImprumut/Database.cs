@@ -28,7 +28,11 @@ namespace PlatformaImprumut
             try {
                 string json = File.ReadAllText(FilePath);
                 return JsonSerializer.Deserialize<Database>(json) ?? new Database();
-            } catch { return new Database(); }
+            } 
+            catch 
+            { 
+                return new Database(); 
+            }
         }
     }
 }
