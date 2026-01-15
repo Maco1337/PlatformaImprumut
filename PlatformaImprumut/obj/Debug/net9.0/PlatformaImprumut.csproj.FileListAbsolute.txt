@@ -1,0 +1,14 @@
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\bin\Debug\net9.0\PlatformaImprumut.exe
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\bin\Debug\net9.0\PlatformaImprumut.deps.json
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\bin\Debug\net9.0\PlatformaImprumut.runtimeconfig.json
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\bin\Debug\net9.0\PlatformaImprumut.dll
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\bin\Debug\net9.0\PlatformaImprumut.pdb
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.AssemblyInfoInputs.cache
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.AssemblyInfo.cs
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.csproj.CoreCompileInputs.cache
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.dll
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\refint\PlatformaImprumut.dll
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.pdb
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\PlatformaImprumut.genruntimeconfig.cache
+C:\Users\macod\RiderProjects\PlatformaImprumut\PlatformaImprumut\obj\Debug\net9.0\ref\PlatformaImprumut.dll

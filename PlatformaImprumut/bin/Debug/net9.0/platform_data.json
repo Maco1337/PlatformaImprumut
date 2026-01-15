@@ -1,0 +1,16 @@
+{
+  "Users": [
+    {
+      "Username": "admin",
+      "Password": "123",
+      "Role": "Admin"
+    }
+  ],
+  "Items": [],
+  "Requests": [],
+  "Categories": [
+    "Unelte",
+    "Carti",
+    "Electronice"
+  ]
+}
