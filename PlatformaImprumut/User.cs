@@ -2,7 +2,7 @@
 
 namespace PlatformaImprumut
 {
-    // Clasa de baza (Abstracta - nu poti crea un User "gol")
+    // clasa de baza pentru utilizatori
     public abstract class User
     {
         public string Username { get; set; }
@@ -10,13 +10,13 @@ namespace PlatformaImprumut
         public string Role { get; set; }
     }
 
-    // Moștenire: Admin este un User
+    // admin
     public class Admin : User 
     { 
         public Admin() => Role = "Admin"; 
     }
 
-    // Moștenire: RegularUser este un User
+    // utilizator normal
     public class RegularUser : User 
     { 
         public RegularUser() => Role = "User"; 
