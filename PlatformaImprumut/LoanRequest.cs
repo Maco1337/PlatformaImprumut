@@ -9,6 +9,6 @@ namespace PlatformaImprumut
         public string ItemName { get; set; }
         public string RequesterUsername { get; set; }
         public string OwnerUsername { get; set; }
-        public string Status { get; set; } = "Pending"; // Pending, Accepted, Rejected
+        public string Status { get; set; } = "Pending"; 
     }
 }
