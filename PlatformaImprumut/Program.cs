@@ -5,18 +5,21 @@ using System.Collections.Generic;
 namespace PlatformaImprumut
 {
     class Program
-    {
+    {  // baza de date a aplicatiei
         static Database db = Database.Load();
+         // utilizatorul curent (null daca nu e logat)
         static User currentUser = null;
 
         static void Main(string[] args)
         {
             if (!db.Users.Any(u => u.Role == "Admin"))
             {
+                // cream un admin implicit daca nu exista
                 db.Users.Add(new Admin { Username = "admin", Password = "123" });
                 db.Save();
             }
 
+            //bucla aplicatiei
             while (true)
             {
                 Console.Clear();
@@ -26,6 +29,7 @@ namespace PlatformaImprumut
             }
         }
 
+        //meniu logare
         static void LoginMenu()
         {
             Console.WriteLine("=== PLATFORMA IMPRUMUT ===");
@@ -46,6 +50,7 @@ namespace PlatformaImprumut
             }
         }
 
+        //meniu utilizator
         static void UserMenu()
         {
             Console.WriteLine($"\n--- Utilizator: {currentUser.Username} ---");
@@ -60,12 +65,13 @@ namespace PlatformaImprumut
             {
                 case "1": AddItemFlow(); break;
                 case "2": SearchItemFlow(); break;
-                case "3": HandleReceivedRequests(); break; // Sectiunea noua proprietar
-                case "4": ViewSentRequests(); break;      // Sectiunea noua imprumutator
+                case "3": HandleReceivedRequests(); break; // sectiunea noua proprietar
+                case "4": ViewSentRequests(); break;      // sectiunea noua imprumutator
                 case "5": currentUser = null; break;
             }
         }
 
+        //adaugare obiect
         static void AddItemFlow()
         {
             Console.WriteLine("\n--- ALEGE CATEGORIA ---");
@@ -85,6 +91,7 @@ namespace PlatformaImprumut
             Console.ReadKey();
         }
 
+         // cautare obiecte si trimitere cerere
         static void SearchItemFlow()
         {
             Console.WriteLine("\n--- CATEGORII DISPONIBILE ---");
@@ -112,7 +119,7 @@ namespace PlatformaImprumut
             Console.ReadKey();
         }
 
-        // --- SECTIUNEA NOUA: GESTIONARE CERERI PRIMITE (PROPRIETAR) ---
+        //cereri primite pentru obiectele proprii
         static void HandleReceivedRequests()
         {
             Console.WriteLine("\n--- CERERI PENTRU OBIECTELE TALE ---");
@@ -132,7 +139,7 @@ namespace PlatformaImprumut
 
                     if (decizie == "1") {
                         request.Status = "Acceptata";
-                        // Marcam obiectul ca fiind ocupat
+                        // marcam obiectul ca fiind ocupat
                         var item = db.Items.FirstOrDefault(it => it.Id == request.ItemId);
                         if (item != null) item.IsAvailable = false;
                         Console.WriteLine("Ai acceptat cererea!");
@@ -147,7 +154,7 @@ namespace PlatformaImprumut
             Console.ReadKey();
         }
 
-        // --- SECTIUNEA NOUA: STATUS CERERI TRIMISE (IMPRUMUTATOR) ---
+        // afisare status cereri trimise
         static void ViewSentRequests()
         {
             Console.WriteLine("\n--- STATUS CERERI TRIMISE DE TINE ---");
@@ -157,7 +164,7 @@ namespace PlatformaImprumut
             else {
                 foreach (var r in sent)
                 {
-                    // Afisare colorata simbolic in text
+                    // afisare colorata simbolic in text
                     Console.WriteLine($"- Obiect: {r.ItemName} | Catre: {r.OwnerUsername} | Status: [{r.Status}]");
                 }
             }
@@ -165,6 +172,7 @@ namespace PlatformaImprumut
             Console.ReadKey();
         }
 
+        // meniu admin
         static void AdminMenu()
         {
             Console.WriteLine("--- ADMIN ---");
