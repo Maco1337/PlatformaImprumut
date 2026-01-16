@@ -10,7 +10,10 @@ namespace PlatformaImprumut
         public List<User> Users { get; set; } = new List<User>();
         public List<Item> Items { get; set; } = new List<Item>();
         public List<LoanRequest> Requests { get; set; } = new List<LoanRequest>();
-        public List<string> Categories { get; set; } = new List<string> { "Unelte", "Carti", "Jocuri" };
+        public List<string> Categories { get; set; } = new List<string> 
+        {"Unelte", 
+        "Carti", 
+        "Jocuri"};
 
         private static readonly string FilePath = "date_platforma.json";
 
