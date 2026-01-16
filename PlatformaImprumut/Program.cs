@@ -202,7 +202,7 @@ namespace PlatformaImprumut
                 db.Categories.Add(Console.ReadLine());
                 db.Save();
             } else 
-                //logoutcurrentUser = null;
+                //logout
                 currentUser = null;
         }
     }
