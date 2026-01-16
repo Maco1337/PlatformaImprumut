@@ -7,11 +7,12 @@ namespace PlatformaImprumut
     class Program
     {  // baza de date a aplicatiei
         static Database db = Database.Load();
-         // utilizatorul curent (null daca nu e logat)
+         // utilizatorul curent sau null daca nu e logat
         static User currentUser = null;
 
         static void Main(string[] args)
         {
+            //verificam daca exista deja un admin
             if (!db.Users.Any(u => u.Role == "Admin"))
             {
                 // cream un admin implicit daca nu exista
@@ -23,8 +24,11 @@ namespace PlatformaImprumut
             while (true)
             {
                 Console.Clear();
+                //nimeni logat=> meniu login
                 if (currentUser == null) LoginMenu();
+                //utilizatorul este admin => meniu de admin
                 else if (currentUser is Admin) AdminMenu();
+                //altfel=> meniul de utilizator normal
                 else UserMenu();
             }
         }
@@ -32,18 +36,25 @@ namespace PlatformaImprumut
         //meniu logare
         static void LoginMenu()
         {
-            Console.WriteLine("PLATFORMA IMPRUMUT");
+            Console.WriteLine("Platforma imput");
             Console.WriteLine("1. Login | 2. Inregistrare | 3. Iesire");
             string opt = Console.ReadLine();
+
+            //iesire
             if (opt == "3") Environment.Exit(0);
 
             Console.Write("Username: "); string u = Console.ReadLine();
             Console.Write("Parola: "); string p = Console.ReadLine();
 
+            //login
             if (opt == "1") {
+                //cautare utilozator in lista
                 currentUser = db.Users.FirstOrDefault(x => x.Username == u && x.Password == p);
                 if (currentUser == null) { Console.WriteLine("Date gresite"); Console.ReadKey(); }
-            } else {
+            } 
+            //inregistrare
+            else 
+            {
                 db.Users.Add(new RegularUser { Username = u, Password = p });
                 db.Save();
                 Console.WriteLine("Cont creat"); Console.ReadKey();
@@ -63,27 +74,30 @@ namespace PlatformaImprumut
 
             switch (opt)
             {
-                case "1": AddItemFlow(); break;
-                case "2": SearchItemFlow(); break;
-                case "3": HandleReceivedRequests(); break; // sectiunea noua proprietar
-                case "4": ViewSentRequests(); break;      // sectiunea noua imprumutator
-                case "5": currentUser = null; break;
+                case "1": AddItemFlow(); break; // utilizatorul publica un obiect
+                case "2": SearchItemFlow(); break; // utilizatorul cauta obiecte si poate trimite cereri
+                case "3": HandleReceivedRequests(); break; // accepta sau respinge cereri
+                case "4": ViewSentRequests(); break;      // afișează cererile și statusul lor
+                case "5": currentUser = null; break;     //accepta sau respinge cereri
             }
         }
 
         //adaugare obiect
         static void AddItemFlow()
         {
-            Console.WriteLine("\n ALEGE CATEGORIA");
+            Console.WriteLine("\n Alege categoria");
+            // afisam categoriile existente
             for (int i = 0; i < db.Categories.Count; i++) Console.WriteLine($"{i + 1}. {db.Categories[i]}");
             
             Console.Write("Numar categorie: ");
+            //verificam alegerea utilizatorului
             if (int.TryParse(Console.ReadLine(), out int catIdx) && catIdx > 0 && catIdx <= db.Categories.Count)
             {
                 string selectedCat = db.Categories[catIdx - 1];
                 Console.Write("Nume obiect: "); string nume = Console.ReadLine();
                 Console.Write("Descriere scurta: "); string desc = Console.ReadLine();
 
+                // cream obiectul si îl adaugam în lista
                 db.Items.Add(new Item { Name = nume, Description = desc, Category = selectedCat, OwnerUsername = currentUser.Username });
                 db.Save();
                 Console.WriteLine("Succes!");
@@ -94,13 +108,14 @@ namespace PlatformaImprumut
          // cautare obiecte si trimitere cerere
         static void SearchItemFlow()
         {
-            Console.WriteLine("\n CATEGORII DISPONIBILE");
+            Console.WriteLine("\n Categorii disponibile");
             for (int i = 0; i < db.Categories.Count; i++) Console.WriteLine($"{i + 1}. {db.Categories[i]}");
 
             Console.Write("Alege categoria: ");
             if (int.TryParse(Console.ReadLine(), out int catIdx) && catIdx > 0 && catIdx <= db.Categories.Count)
             {
                 string selectedCat = db.Categories[catIdx - 1];
+                //filtram obiectele disponibile
                 var filteredItems = db.Items.Where(i => i.Category == selectedCat && i.IsAvailable && i.OwnerUsername != currentUser.Username).ToList();
 
                 if (!filteredItems.Any()) Console.WriteLine("Nimic disponibil aici");
@@ -110,6 +125,7 @@ namespace PlatformaImprumut
                     if (int.TryParse(Console.ReadLine(), out int itemIdx) && itemIdx > 0 && itemIdx <= filteredItems.Count)
                     {
                         var target = filteredItems[itemIdx - 1];
+                        // cream cererea de împrumut
                         db.Requests.Add(new LoanRequest { ItemId = target.Id, ItemName = target.Name, RequesterUsername = currentUser.Username, OwnerUsername = target.OwnerUsername });
                         db.Save();
                         Console.WriteLine("Cerere trimisa");
@@ -122,7 +138,7 @@ namespace PlatformaImprumut
         //cereri primite pentru obiectele proprii
         static void HandleReceivedRequests()
         {
-            Console.WriteLine("\n CERERI PENTRU OBIECTELE TALE");
+            Console.WriteLine("\n Cereri pentru obiectele tale");
             var received = db.Requests.Where(r => r.OwnerUsername == currentUser.Username && r.Status == "Pending").ToList();
 
             if (!received.Any()) { Console.WriteLine("Nu ai cereri noi"); }
@@ -139,7 +155,7 @@ namespace PlatformaImprumut
 
                     if (decizie == "1") {
                         request.Status = "Acceptata";
-                        // marcam obiectul ca fiind ocupat
+                        // marcam obiectul ca fiind ocupat/indisponibil
                         var item = db.Items.FirstOrDefault(it => it.Id == request.ItemId);
                         if (item != null) item.IsAvailable = false;
                         Console.WriteLine("Ai acceptat cererea");
@@ -157,7 +173,7 @@ namespace PlatformaImprumut
         // afisare status cereri trimise
         static void ViewSentRequests()
         {
-            Console.WriteLine("\n STATUS CERERI TRIMISE DE TINE");
+            Console.WriteLine("\n Status cereri trimise de tine");
             var sent = db.Requests.Where(r => r.RequesterUsername == currentUser.Username).ToList();
 
             if (!sent.Any()) { Console.WriteLine("Nu ai trimis nicio cerere"); }
@@ -175,7 +191,7 @@ namespace PlatformaImprumut
         // meniu admin
         static void AdminMenu()
         {
-            Console.WriteLine("ADMIN");
+            Console.WriteLine("Admin");
             Console.WriteLine("1. Utilizatori | 2. Adauga Categorie | 3. Logout");
             string opt = Console.ReadLine();
             if (opt == "1") {
@@ -185,7 +201,9 @@ namespace PlatformaImprumut
                 Console.Write("Nume categorie: ");
                 db.Categories.Add(Console.ReadLine());
                 db.Save();
-            } else currentUser = null;
+            } else 
+                //logoutcurrentUser = null;
+                currentUser = null;
         }
     }
 }
