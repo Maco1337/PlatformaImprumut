@@ -13,8 +13,7 @@ namespace PlatformaImprumut
 
         public override string ToString()
         {
-            
-            return $"{Name} - {Description} | Stare: {(IsAvailable ? "Disponibil" : "Imprumutat")}";
+            return $"{Name} - {Description}  Stare: {(IsAvailable ? "Disponibil" : "Imprumutat")}";
         }
     }
 }
